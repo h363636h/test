@@ -1,6 +1,6 @@
 <?php
 include "lib/dbconn.php";
-
+echo "dddd";
 ?>
 <html>
     <link rel="stylesheet" href="css/jquery_ui.css" />	
