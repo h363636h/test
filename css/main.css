@@ -1,0 +1,67 @@
+@font-face{font-family:'ABeeZee'; src:url('../fonts/ABeeZee-Regular.ttf')}
+@font-face{font-family:'Acme'; src:url('../fonts/Acme-Regular.ttf')}
+
+body,p,div{
+font-family : "ABeeZee";
+margin : 0;
+}
+.view{
+	width : 100%;
+	float : left;
+
+}
+
+.view_left {
+	width : 20%;
+	height:100vh;
+	float : left;
+	overflow: hidden;
+	overflow-y:auto;
+	background : #222222;
+	color : white;
+
+}
+
+.view_right{
+	width : 77%;
+	float : left;
+	margin-left: 2%;
+
+}
+
+.bt_up{
+	cursor:hand;
+	color:#FA5882;
+
+}
+
+.bt_down{
+	cursor:hand;
+	color : #FA5882;
+}
+
+input[type="text"]{
+	background-color: transparent;
+}
+
+
+table{
+	border-collapse: collapse;
+	width: 95%;
+}
+
+td,th{
+	border : 1px solid #ddd;
+	padding : 5px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
+tr:hover {background-color: #ddd;}
+
+th{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: center;
+	background-color: #0291CA;
+	color : white;
+}
