@@ -27,7 +27,7 @@ $field = mysql_num_fields($select_result);
 
 $fields = [];
 
-for ($i=6; $i<$field; $i++){
+for ($i=8; $i<$field; $i++){
   array_push($fields,mysql_field_name($select_result,$i));
 }
 

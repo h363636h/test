@@ -1,7 +1,4 @@
-<?php
-include "lib/dbconn.php";
-echo "dddd";
-?>
+<?php include "lib/dbconn.php"; ?>
 <html>
     <link rel="stylesheet" href="css/jquery_ui.css" />	
     <script src='js/jquery-11.0.min.js' type='text/javascript'></script>
@@ -20,7 +17,7 @@ echo "dddd";
     <p style="padding-left : 72%; font-size:30"><b>Task Manager</b></p><br><br><br>
 <?php if(isset($lists)) {?>
 
-	<h1 style='padding-left: 2.5%'>Add Task</h1>
+	<h1 style='padding-left: 2.5%'>Update Task</h1>
   	<form method="post" action="index.php">
 	    <table align='center' border='1' cellspacing="0" cellpadding="0" width="90%">
 	      <tr>

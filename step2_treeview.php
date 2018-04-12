@@ -1,11 +1,17 @@
 <?php
 
 include "lib/dbconn.php";
+// $project = $_GET['project'];
+$project = "dst";
 $lists =$_POST['val'];
 $json= array_values($lists);
+$shots = [];
+
 for($i=0; $i<count($lists); $i++){
   $idx = $json[$i]["idx"];
   $shot_name =  $json[$i]["shot_name"];
+
+  array_push($shots,$shot_name);
 
   if($json[$i]["tracking"] == "0"){
     $tracking = null;
@@ -90,19 +96,9 @@ for($i=0; $i<count($lists); $i++){
 
 }
 
-$select_sql = "select * from info where (tracking !='' or match_move !='' or blocking !='' or ani !='' or fx !='' or lighting !='' or matte !='' or motion !='' or remove !='' or roto !='' or info_key !='' or comp !='' or s3d !='') and name ='sc45a_0200'";
-
-$select_result = mysql_query($select_sql,$connect);
-
-// mysql_field_name($select_sql,$connect);
-
-// echo $lists;
-
-
-// $test = json_decode($lists);
-// echo $test['tracking'];
-// echo $test->tracking;
-
+$select_seq_sql = "SELECT distinct(sequence) FROM task_manager.info WHERE type='shot' and project='$project' and (NOT(tracking='') or NOT(match_move='') or NOT(blocking='') or NOT(ani='') or NOT(fx='') or NOT(lighting='') or NOT(matte='') or NOT(motion='') or NOT(remove='') or NOT(roto='') or NOT(info_key='') or NOT(comp='') or NOT(s3d=''))";
+$select_seq_result = mysql_query($select_seq_sql,$connect);
+$select_seq_cnt = mysql_num_rows($select_seq_result);
 
 ?>
 
@@ -152,7 +148,6 @@ $select_result = mysql_query($select_sql,$connect);
         	<li><i class="fa fa-caret-down"></i>&nbsp;<label><input type="checkbox">Assets</label>	<!--Asset List-->
             <ul style="display: block;">
 
-
             </ul>
           </li>		<!--Asset List End-->
           <br>
@@ -165,23 +160,30 @@ $select_result = mysql_query($select_sql,$connect);
       						echo "<li><i class='fa fa-caret-right'></i>&nbsp;<label><input type='checkbox'>$select_seq_rs[sequence]</label>";
       						echo "<ul>";
 
-                  if(isset($filter)){
-                    $select_shot_sql = "SELECT name FROM task_manager.info WHERE type='shot' and sequence='$select_seq_rs[sequence]' and project='$project' and $search_text='O'";
-                    $select_shot_result = mysql_query($select_shot_sql,$connect);
-                    $select_shot_cnt = mysql_num_rows($select_shot_result);
 
-                  }else{
                     $select_shot_sql = "SELECT name FROM task_manager.info where type='shot' and sequence='$select_seq_rs[sequence]' and project='$project'";
                     $select_shot_result = mysql_query($select_shot_sql, $connect);
                     $select_shot_cnt = mysql_num_rows($select_shot_result);                    
-                  }
+
 
       						for($i2=0; $i2<$select_shot_cnt; $i2++){
       							$select_shot_rs = mysql_fetch_array($select_shot_result);
-      							echo "<li>&nbsp;<label><input class='hummingbirdNoParent' type='checkbox' name='type_lists[]' value='$select_shot_rs[name]'><span></span>$select_shot_rs[name]</label></li>";
+      							echo "<li><i class='fa fa-caret-right'></i>&nbsp;<label><input type='checkbox'>$select_shot_rs[name]</label>";
+                    echo "<ul>";
+
+                    $select_task_sql = "SELECT tracking,match_move,blocking,ani,fx,lighting,matte,motion,remove,roto,info_key,comp,s3d FROM task_manager.info WHERE type='shot' and project='$project' and sequence='$select_seq_rs[sequence]' and name='$select_shot_rs[name]' and (NOT(tracking='') or NOT(match_move='') or NOT(blocking='') or NOT(ani='') or NOT(fx='') or NOT(lighting='') or NOT(matte='') or NOT(motion='') or NOT(remove='') or NOT(roto='') or NOT(info_key='') or NOT(comp='') or NOT(s3d=''))";
+                    $select_task_result = mysql_query($select_task_sql,$connect);
+
+                    while($row = mysql_fetch_assoc($select_task_result)){
+                      foreach ($row as $field => $value){
+                        if($value!=""){
+                          echo "<li>&nbsp;<label><input class='hummingbirdNoParent' type='checkbox' name='type_lists[]'>$field</label></li>";
+                        }
+                      }
+                    }
+                    echo "</ul></li>";
       						}
-      						echo "</ul>";
-      						echo "</li>"; 
+      						echo "</ul></li>";
       					}
                 echo "<input type='hidden' name='type' value='Shot'>";
             	?>

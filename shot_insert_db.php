@@ -59,9 +59,15 @@ try {
             $value = $objWorksheet->getCellByColumnAndRow($j,5)->getValue();
             $value = str_replace(chr(10),"",$value);
 
+            echo $value;
+
             if($value == "shot code"){
               array_push($colArr,$j);
             } else if($value == "우선순위"){
+              array_push($colArr,$j);
+            } else if($value == "VFX Note"){
+              array_push($colArr,$j);
+            } else if($value == "MG_Description"){
               array_push($colArr,$j);
             } else if($value == "Tracking"){
               array_push($colArr,$j);
@@ -89,7 +95,7 @@ try {
               array_push($colArr,$j);
             } else if($value == "S3D"){
               array_push($colArr,$j);
-            }
+            } 
         }
       } else{
         for($j=0; $j<$maxColIndex;$j++){
@@ -112,19 +118,24 @@ echo json_encode($colArr);
           for($row=8; $row <=$maxRow; $row++){
               $rank = $objWorksheet->getCellByColumnAndRow($colArr[0],$row)->getValue();
               $name = $objWorksheet->getCellByColumnAndRow($colArr[1],$row)->getValue();
-              $tracking = $objWorksheet->getCellByColumnAndRow($colArr[2],$row)->getValue();
-              $match_move = $objWorksheet->getCellByColumnAndRow($colArr[3],$row)->getValue();
-              $blocking = $objWorksheet->getCellByColumnAndRow($colArr[4],$row)->getValue();
-              $ani = $objWorksheet->getCellByColumnAndRow($colArr[5],$row)->getValue();
-              $fx = $objWorksheet->getCellByColumnAndRow($colArr[6],$row)->getValue();
-              $lighting = $objWorksheet->getCellByColumnAndRow($colArr[7],$row)->getValue();
-              $matte = $objWorksheet->getCellByColumnAndRow($colArr[8],$row)->getValue();
-              $motion = $objWorksheet->getCellByColumnAndRow($colArr[9],$row)->getValue();
-              $remove = $objWorksheet->getCellByColumnAndRow($colArr[10],$row)->getValue();
-              $roto = $objWorksheet->getCellByColumnAndRow($colArr[11],$row)->getValue();
-              $key = $objWorksheet->getCellByColumnAndRow($colArr[12],$row)->getValue();
-              $comp = $objWorksheet->getCellByColumnAndRow($colArr[13],$row)->getValue();
-              $s3d = $objWorksheet->getCellByColumnAndRow($colArr[14],$row)->getValue();
+              $vfx_note = $objWorksheet->getCellByColumnAndRow($colArr[2],$row)->getValue();
+              $mg_description = $objWorksheet->getCellByColumnAndRow($colArr[3],$row)->getValue();
+              $tracking = $objWorksheet->getCellByColumnAndRow($colArr[4],$row)->getValue();
+              $match_move = $objWorksheet->getCellByColumnAndRow($colArr[5],$row)->getValue();
+              $blocking = $objWorksheet->getCellByColumnAndRow($colArr[6],$row)->getValue();
+              $ani = $objWorksheet->getCellByColumnAndRow($colArr[7],$row)->getValue();
+              $fx = $objWorksheet->getCellByColumnAndRow($colArr[8],$row)->getValue();
+              $lighting = $objWorksheet->getCellByColumnAndRow($colArr[9],$row)->getValue();
+              $matte = $objWorksheet->getCellByColumnAndRow($colArr[10],$row)->getValue();
+              $motion = $objWorksheet->getCellByColumnAndRow($colArr[11],$row)->getValue();
+              $remove = $objWorksheet->getCellByColumnAndRow($colArr[12],$row)->getValue();
+              $roto = $objWorksheet->getCellByColumnAndRow($colArr[13],$row)->getValue();
+              $key = $objWorksheet->getCellByColumnAndRow($colArr[14],$row)->getValue();
+              $comp = $objWorksheet->getCellByColumnAndRow($colArr[15],$row)->getValue();
+              $s3d = $objWorksheet->getCellByColumnAndRow($colArr[16],$row)->getValue();
+
+
+
               $name = str_replace(chr(10),"",$name);
               $name = strtolower($name);
               $sequence = split("_",$name)[0];
@@ -132,12 +143,13 @@ echo json_encode($colArr);
               if($name == ""){
 
               }else{
-                $insert_sql = "insert into info(sequence,name,rank,tracking,match_move,blocking,ani,fx,lighting,matte,motion,remove,roto,info_key,comp,s3d,project,type)";
-                $insert_sql .="values('$sequence','$name','$rank','$tracking','$match_move','$blocking','$ani','$fx','$lighting','$matte','$motion','$remove','$roto','$key','$comp','$s3d','$project','shot')";
+                $insert_sql = "insert into info(sequence,name,rank,project,type,vfx_note,mg_description,tracking,match_move,blocking,ani,fx,lighting,matte,motion,remove,roto,info_key,comp,s3d)";
+                $insert_sql .="values('$sequence','$name','$rank','$project','shot','$vfx_note','$mg_description','$tracking','$match_move','$blocking','$ani','$fx','$lighting','$matte','$motion','$remove','$roto','$key','$comp','$s3d')";
+                // echo $insert_sql;
                 $insert_result = mysql_query($insert_sql,$connect);
               }
         }
-        // echo "</table>";
+
 
         if($insert_result){
           echo "<script>sg_connect();</script>";
